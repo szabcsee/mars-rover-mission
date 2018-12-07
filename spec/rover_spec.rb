@@ -1,113 +1,110 @@
-require_relative '../src/rover'
-
-RSpec.configure do |config|
-  config.color = true
-  config.tty = true
-  config.formatter = :documentation
-  config.expect_with :rspec do |expectations|
-
-    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
-  end
-end
-
-
 RSpec.describe Rover do
 
-  describe '#initialize' do
-    rover = described_class.new([1, 2, 'N'])
-    it 'initializes with appropriate values' do
-      expect(rover.direction).to eq('N')
-      expect(rover.get_position).to eq('1 2 N')
+  describe '#turn_left' do
+    before { rover.turn_left }
+
+    context 'when it faces north' do
+      let(:rover) { described_class.new([1, 2, 'N']) }
+
+      it 'turns to west' do
+        expect(rover.get_status).to eq('1 2 W')
+      end
     end
 
-    it 'turns left and face West' do
-      rover.turn_left
-      expect(rover.direction).to eq('W')
+    context 'when it faces west' do
+      let(:rover) { described_class.new([1, 2, 'W']) }
+
+      it 'turns to south' do
+        expect(rover.get_status).to eq('1 2 S')
+      end
     end
 
-    it 'turns left and face South' do
-      rover.turn_left
-      expect(rover.direction).to eq('S')
+    context 'when it faces south' do
+      let(:rover) { described_class.new([1, 2, 'S']) }
+
+      it 'turns to east' do
+        expect(rover.get_status).to eq('1 2 E')
+      end
     end
 
-    it 'turns left and face East' do
-      rover.turn_left
-      expect(rover.direction).to eq('E')
-    end
+    context 'when it faces east' do
+      let(:rover) { described_class.new([1, 2, 'E']) }
 
-    it 'turns left and face North again' do
-      rover.turn_left
-      expect(rover.direction).to eq('N')
-    end
-
-    it 'turns right and face East' do
-      rover.turn_right
-      expect(rover.direction).to eq('E')
-    end
-
-    it 'turns right and face South' do
-      rover.turn_right
-      expect(rover.direction).to eq('S')
-    end
-
-    it 'turns right and face West' do
-      rover.turn_right
-      expect(rover.direction).to eq('W')
-    end
-
-    it 'turns right and face North again' do
-      rover.turn_right
-      expect(rover.direction).to eq('N')
+      it 'turns back to north' do
+        expect(rover.get_status).to eq('1 2 N')
+      end
     end
   end
 
-  describe '#start_a_new_mission' do
-    rover   = described_class.new([1, 2, 'N'])
-    plateau = [5, 5]
-    path    = 'L M L M L M L M M'
+  describe '#turn_right' do
+    before { rover.turn_right }
 
-    it 'from 1 2 N with L M L M L M L M M arrive at 1 3 N' do
-      expect(rover.start_mission(path, plateau)).to eq("1 3 N")
+    context 'when it faces north' do
+      let(:rover) { described_class.new([1, 2, 'N']) }
+
+      it 'turns to east' do
+        expect(rover.get_status).to eq('1 2 E')
+      end
+    end
+
+    context 'when it faces east' do
+      let(:rover) { described_class.new([1, 2, 'E']) }
+
+      it 'turns to south' do
+        expect(rover.get_status).to eq('1 2 S')
+      end
+    end
+
+    context 'when it faces south' do
+      let(:rover) { described_class.new([1, 2, 'S']) }
+
+      it 'turns to west' do
+        expect(rover.get_status).to eq('1 2 W')
+      end
+    end
+
+    context 'when it faces west' do
+      let(:rover) { described_class.new([1, 2, 'W']) }
+
+      it 'turns back to north' do
+        expect(rover.get_status).to eq('1 2 N')
+      end
     end
   end
 
-  describe '#second mission' do
-    rover   = described_class.new([3, 3, 'E'])
-    plateau = [5, 5]
-    path    = 'M M R M M R M R R M'
+  describe '#move' do
+    before { rover.move }
 
-    it 'from 3 3 E with M M R M M R M R R M arrive at 5 1 E' do
-      expect(rover.start_mission(path, plateau)).to eq("5 1 E")
+    context 'when it faces north' do
+      let(:rover) { described_class.new([1, 2, 'N']) }
+
+      it 'moves to the north' do
+        expect(rover.get_status).to eq('1 3 N')
+      end
     end
-  end
 
-  describe '#third mission' do
-    rover   = described_class.new([1, 3, 'N'])
-    plateau = [5,5]
-    path    = 'M R M L M M L M R M M'
+    context 'when it faces west' do
+      let(:rover) { described_class.new([1, 2, 'W']) }
 
-    it 'from 1 3 N with M R M L M M L M R M M arrive at 1 3 N' do
-      expect(rover.start_mission(path, plateau)).to eq("1 3 N")
+      it 'moves to the west' do
+        expect(rover.get_status).to eq('0 2 W')
+      end
     end
-  end
 
-  describe '#fourth mission' do
-    rover   = described_class.new([1, 2, 'N'])
-    plateau = [5,5]
-    path    = 'M L M M R M M M L'
+    context 'when it faces east' do
+      let(:rover) { described_class.new([1, 2, 'E']) }
 
-    it 'from 1 2 N with M L M M R M M M L arrive at 4 1 W' do
-      expect(rover.start_mission(path, plateau)).to eq("4 1 W")
+      it 'moves to the east' do
+        expect(rover.get_status).to eq('2 2 E')
+      end
     end
-  end
 
-  describe '#fifth mission' do
-    rover   = described_class.new([1, 2, 'N'])
-    plateau = [10,10]
-    path    = 'M L M M R M M M L'
+    context 'when it faces south' do
+      let(:rover) { described_class.new([1, 2, 'S']) }
 
-    it 'from 1 2 N with M L M M R M M M L arrive at 4 1 W on a 10 10 plateau' do
-      expect(rover.start_mission(path, plateau)).to eq("9 6 W")
+      it 'moves to the south' do
+        expect(rover.get_status).to eq('1 1 S')
+      end
     end
   end
 end

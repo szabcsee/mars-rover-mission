@@ -5,17 +5,7 @@ class Rover
     @position = { x: Integer(coordinate[0]),
                   y: Integer(coordinate[1])
     }
-    @direction = create_from_param(coordinate[2])
-  end
-
-  # @type [String] param
-  def create_from_param(param)
-    case param
-    when 'N' then Directions::North.new
-    when 'E' then Directions::East.new
-    when 'W' then Directions::West.new
-    when 'S' then Directions::South.new
-    end
+    @direction = Directions.from_s(coordinate[2])
   end
 
   def turn_left

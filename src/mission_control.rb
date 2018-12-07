@@ -16,6 +16,14 @@ class MissionControl
     @rover = rover
   end
 
+  def get_rover
+    @rover
+  end
+
+  def get_plateau
+    @plateau
+  end
+
   def execute(command)
     if command == 'M'
       return unless @plateau.within_boundaries?(@rover.position, @rover.direction)

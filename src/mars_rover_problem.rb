@@ -1,10 +1,7 @@
 require_relative './rover'
 require_relative './plateau'
 require_relative './mission_control'
-require_relative './directions/east'
-require_relative './directions/west'
-require_relative './directions/south'
-require_relative './directions/north'
+require_relative './directions'
 
 @plateau = Plateau.new(ARGF.gets.split)
 @mission_control = MissionControl.new(@plateau)

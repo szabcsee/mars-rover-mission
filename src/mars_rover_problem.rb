@@ -1,19 +1,17 @@
 require_relative './rover'
 require_relative './plateau'
-require_relative './directions/directions'
+require_relative './mission_control'
 require_relative './directions/east'
 require_relative './directions/west'
 require_relative './directions/south'
 require_relative './directions/north'
 
-
-ARGF.each_line do |line|
-  case line.strip.split.count
-    when 2
-      @plateau = Plateau.new(line.split)
-    when 3
-      @rover = Rover.new(line.split)
-    else
-      puts @rover.start_mission(line, @plateau)
-  end
+@plateau = Plateau.new(ARGF.gets.split)
+@mission_control = MissionControl.new(@plateau)
+while !ARGF.eof
+  @rover = Rover.new(ARGF.gets.split)
+  @mission_control.add_rover(@rover)
+  @path = ARGF.gets
+  @mission_control.start_mission(@path)
+  puts @rover.get_status
 end

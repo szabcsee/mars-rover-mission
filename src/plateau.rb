@@ -1,5 +1,4 @@
 class Plateau
-  attr_reader :height, :width
 
   # @type [array] coordinates
   def initialize(coordinates)
@@ -7,24 +6,8 @@ class Plateau
     @height = coordinates[1].to_i
   end
 
-  # @type [array] position
-  def move_rover(position)
-    return unless within_boundaries?(position)
-
-    case position[:facing]
-    when 'N'
-      position[:y] += 1
-    when 'E'
-      position[:x] += 1
-    when 'S'
-      position[:y] -= 1
-    when 'W'
-      position[:x] -= 1
-    end
-  end
-
-  def within_boundaries?(position)
-    case position[:facing]
+  def within_boundaries?(position, direction)
+    case direction.to_s
     when 'N'
       position[:y] < @height
     when 'E'

@@ -9,7 +9,7 @@
 ## Run
 
 ### Setup
-Install bundle dependencies
+Install rspec gem
 ```
 $ bundle install
 ```
@@ -17,7 +17,7 @@ $ bundle install
 
 ### Running Tasks
 
-Run `mars_rover.rb` script with `mars_rover.input`
+Run `mars_rover_problem.rb` script with `mission.txt`
 ```
 $ rake run
 ```
